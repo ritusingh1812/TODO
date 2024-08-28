@@ -1,0 +1,107 @@
+body {
+font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  background-color: #e0f7fa;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.auth-container, .todo-container {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 350px;
+  text-align: center;
+}
+
+input[type="text"], input[type="password"] {
+  width: calc(100% - 20px);
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+button {
+
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: none;
+  background-color: #00796b;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #004d40;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  background-color: #f1f1f1;
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+li input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+li .todo-text {
+  flex-grow: 1;
+  padding: 0 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+li button {
+  background-color: transparent;
+  border: none;
+
+  background-color: #ffc2c2;
+  cursor: pointer;
+  
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+ width:80px;
+ padding: 5px;
+  justify-content: center;
+  transition: color 0.3s ease;
+}
+
+li button:hover {
+  background-color: #b71c1c;
+}
+
+.user-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#message {
+  color: red;
+  margin-bottom: 10px;
+}
+
+#toggleAuth {
+  margin-top: 10px;
+}
