@@ -1,11 +1,11 @@
 let users = JSON.parse(localStorage.getItem('users')) || [];
 
 function getLoggedInUser() {
-  return JSON.parse(localStorage.getItem('loggedInUser'));
+  return JSON.parse(getCookie('loggedInUser'));
 }
 
 function saveLoggedInUser(user) {
-  localStorage.setItem('loggedInUser', JSON.stringify(user));
+  setCookie('loggedInUser', JSON.stringify(user), 7);
 }
 
 function updateUsersArray(updatedUser) {
@@ -46,7 +46,7 @@ document.getElementById('authForm').addEventListener('submit', function (e) {
 });
 
 document.getElementById('logout').addEventListener('click', function () {
-  localStorage.removeItem('loggedInUser');
+  deleteCookie('loggedInUser');
   document.querySelector('.auth-container').style.display = 'block';
   document.querySelector('.todo-container').style.display = 'none';
   document.getElementById('username').value = '';
@@ -70,34 +70,34 @@ document.getElementById('todoForm').addEventListener('submit', function (e) {
 });
 
 function renderTodos(todos) {
-    const todoList = document.getElementById('todoList');
-    todoList.innerHTML = '';
-    todos.forEach((todo, index) => {
-      const li = document.createElement('li');
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.classList.add('todo-checkbox');
-  
-      const todoText = document.createElement('span');
-      todoText.textContent = `${todo.text} (${todo.date})`;
-      todoText.classList.add('todo-text');
-  
-      const deleteBtn = document.createElement('button');
-      deleteBtn.innerHTML = 'Delete'; 
-      deleteBtn.addEventListener('click', function () {
-        todos.splice(index, 1);
-        const loggedInUser = getLoggedInUser();
-        loggedInUser.todos = todos;
-        updateUsersArray(loggedInUser);
-        renderTodos(todos);
-      });
-  
-      li.appendChild(checkbox);
-      li.appendChild(todoText);
-      li.appendChild(deleteBtn);
-      todoList.appendChild(li);
+  const todoList = document.getElementById('todoList');
+  todoList.innerHTML = '';
+  todos.forEach((todo, index) => {
+    const li = document.createElement('li');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.classList.add('todo-checkbox');
+
+    const todoText = document.createElement('span');
+    todoText.textContent = `${todo.text} (${todo.date})`;
+    todoText.classList.add('todo-text');
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.innerHTML = 'Delete';
+    deleteBtn.addEventListener('click', function () {
+      todos.splice(index, 1);
+      const loggedInUser = getLoggedInUser();
+      loggedInUser.todos = todos;
+      updateUsersArray(loggedInUser);
+      renderTodos(todos);
     });
-  }
+
+    li.appendChild(checkbox);
+    li.appendChild(todoText);
+    li.appendChild(deleteBtn);
+    todoList.appendChild(li);
+  });
+}
 
 function showTodoList() {
   const loggedInUser = getLoggedInUser();
@@ -115,7 +115,6 @@ document.addEventListener('click', function (e) {
     document.querySelector('button[type="submit"]').textContent = 'Login';
     document.getElementById('toggleAuth').innerHTML = 'Don\'t have an account? <a href="#" id="switchToRegister">Sign In</a> instead';
     document.getElementById('message').textContent = '';
-    switchAuthForm();
   }
 });
 
@@ -127,6 +126,39 @@ document.addEventListener('click', function (e) {
     document.getElementById('message').textContent = '';
   }
 });
+
+function showMessage(message) {
+  const messageDiv = document.getElementById('message');
+  messageDiv.textContent = message;
+}
+
+function setCookie(name, value, days) {
+  const date = new Date();
+  date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+  document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/`;
+}
+
+function getCookie(name) {
+  const cookies = document.cookie.split(';');
+  for (let cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.split('=');
+    if (cookieName.trim() === name) {
+      return decodeURIComponent(cookieValue);
+    }
+  }
+  return null;
+}
+
+function deleteCookie(name) {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+}
+
+window.onload = function () {
+  const loggedInUser = getLoggedInUser();
+  if (loggedInUser) {
+    showTodoList();
+  }
+};
 
 function showMessage(message) {
   const messageDiv = document.getElementById('message');
